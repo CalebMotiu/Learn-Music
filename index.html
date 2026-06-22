@@ -28,15 +28,26 @@
 
     <div class="piano-wrapper">
       <div class="piano-controls">
-        <button class="control-btn on" id="btn-etichete" onclick="toggleEtichete()">Etichete note</button>
-        <button class="control-btn" id="btn-taste-kb" onclick="toggleTasteKB()">Taste tastatură</button>
         <div class="octava-sel">
           <button onclick="schimbaOctava(-1)">−</button>
           <span id="octava-label">Octava 4</span>
           <button onclick="schimbaOctava(1)">+</button>
         </div>
       </div>
-
+      <div class="portativ-wrapper">
+        <div class="portativ" id="portativ">
+          <div class="portativ-clef">𝄞</div>
+          <div class="portativ-lines">
+            <div class="staff-line line-1"></div>
+            <div class="staff-line line-2"></div>
+            <div class="staff-line line-3"></div>
+            <div class="staff-line line-4"></div>
+            <div class="staff-line line-5"></div>
+            <div class="portativ-note" id="portativ-note"></div>
+            <div class="ledger-line" id="portativ-ledger"></div>
+          </div>
+        </div>
+      </div>
       <div class="nota-curenta" id="nota-curenta">—</div>
 
       <div class="piano-body">

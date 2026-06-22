@@ -59,15 +59,13 @@ function construiesteGama(radacina, tip) {
 // MIDI offset albe: 0,2,4,5,7,9,11,12
 // Negre relative la pozitia albelor (offset px)
 const ALBE_OFFSET = [0,2,4,5,7,9,11]; // semitonuri
-const ALBE_TASTE_KB = ['A','S','D','F','G','H','J'];
-const NEGRE_TASTE_KB = ['W','E','T','Y','U'];
 // Pozitia negre (intre care albe, offset in px relativ la stanga albei stanga)
 const NEGRE_CONFIG = [
-  {dupa: 0, semi: 1},  // Do# dupa Do
-  {dupa: 1, semi: 3},  // Re# dupa Re
-  {dupa: 3, semi: 6},  // Fa# dupa Fa
-  {dupa: 4, semi: 8},  // Sol# dupa Sol
-  {dupa: 5, semi: 10}  // La# dupa La
+  {dupa: 0, semi: 1, sharp: 'Do#', flat: 'Re♭'},  // Do# dupa Do
+  {dupa: 1, semi: 3, sharp: 'Re#', flat: 'Mi♭'},  // Re# dupa Re
+  {dupa: 3, semi: 6, sharp: 'Fa#', flat: 'Sol♭'},  // Fa# dupa Fa
+  {dupa: 4, semi: 8, sharp: 'Sol#', flat: 'La♭'},  // Sol# dupa Sol
+  {dupa: 5, semi: 10, sharp: 'La#', flat: 'Si♭'}  // La# dupa La
 ];
 
 let octavaActuala = 4;
@@ -157,6 +155,11 @@ function construiesteKb(idContainer, octava, gamaSet) {
     const left = cfg.dupa * lataAlba + lataAlba - lataNeagra / 2;
     el.style.left = left + 'px';
 
+    const lblNota = document.createElement('div');
+    lblNota.className = 'label-nota' + (eticheteVizibile ? '' : ' ascuns');
+    lblNota.innerHTML = `${cfg.sharp}<br>${cfg.flat}`;
+    el.appendChild(lblNota);
+
     if (tasteKBVizibile && NEGRE_TASTE_KB[i]) {
       const lblKb = document.createElement('div');
       lblKb.className = 'label-nota';
@@ -176,6 +179,50 @@ function construiesteKb(idContainer, octava, gamaSet) {
   container.style.height = '190px';
 }
 
+const PORTATIV_MAP = {
+  60: { left: '10%', top: '142px', ledger: true, ledgerTop: '150px' },
+  61: { left: '16%', top: '132px', ledger: true, ledgerTop: '140px' },
+  62: { left: '22%', top: '124px' },
+  63: { left: '28%', top: '116px' },
+  64: { left: '34%', top: '108px' },
+  65: { left: '40%', top: '100px' },
+  66: { left: '46%', top: '92px' },
+  67: { left: '52%', top: '84px' },
+  68: { left: '58%', top: '76px' },
+  69: { left: '64%', top: '68px' },
+  70: { left: '70%', top: '60px' },
+  71: { left: '76%', top: '52px' },
+  72: { left: '82%', top: '44px' }
+};
+
+function initPortativ() {
+  const note = document.getElementById('portativ-note');
+  const ledger = document.getElementById('portativ-ledger');
+  if (note) note.style.display = 'none';
+  if (ledger) ledger.style.display = 'none';
+}
+
+function afiseazaNotaPortativ(midi) {
+  const nota = PORTATIV_MAP[midi];
+  const noteEl = document.getElementById('portativ-note');
+  const ledgerEl = document.getElementById('portativ-ledger');
+  if (!noteEl || !nota) {
+    if (noteEl) noteEl.style.display = 'none';
+    if (ledgerEl) ledgerEl.style.display = 'none';
+    return;
+  }
+  noteEl.style.display = 'block';
+  noteEl.style.left = nota.left;
+  noteEl.style.top = nota.top;
+  if (nota.ledger && ledgerEl) {
+    ledgerEl.style.display = 'block';
+    ledgerEl.style.left = nota.left;
+    ledgerEl.style.top = nota.ledgerTop || nota.top;
+  } else if (ledgerEl) {
+    ledgerEl.style.display = 'none';
+  }
+}
+
 function apasaClapa(el, midi) {
   if (ctx.state === 'suspended') ctx.resume();
   cantaNotaMIDI(midi);
@@ -184,6 +231,7 @@ function apasaClapa(el, midi) {
 
   const semiton = midi % 12;
   document.getElementById('nota-curenta').textContent = NOTE_OCTAVA[semiton] + ' ' + (Math.floor(midi/12)-1);
+  afiseazaNotaPortativ(midi);
 }
 
 // ============================================================
@@ -204,25 +252,13 @@ document.addEventListener('keydown', e => {
   else {
     cantaNotaMIDI(midi);
     document.getElementById('nota-curenta').textContent = NOTE_OCTAVA[midi%12] + ' ' + (Math.floor(midi/12)-1);
+    afiseazaNotaPortativ(midi);
   }
 });
 
 // ============================================================
 //  CONTROLS
 // ============================================================
-function toggleEtichete() {
-  eticheteVizibile = !eticheteVizibile;
-  document.getElementById('btn-etichete').classList.toggle('on', eticheteVizibile);
-  document.querySelectorAll('.label-nota').forEach(el => {
-    if (el.closest('#tastatura')) el.classList.toggle('ascuns', !eticheteVizibile);
-  });
-}
-
-function toggleTasteKB() {
-  tasteKBVizibile = !tasteKBVizibile;
-  document.getElementById('btn-taste-kb').classList.toggle('on', tasteKBVizibile);
-  construiesteKb('tastatura', octavaActuala, null);
-}
 
 function schimbaOctava(dir) {
   octavaActuala = Math.max(2, Math.min(6, octavaActuala + dir));
