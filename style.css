@@ -208,8 +208,8 @@ nav button:hover, nav button.activ {
 .portativ-note::after {
   content: '';
   position: absolute;
-  right: -2px;
-  top: -38px;
+  right: -.5px;
+  top: -30px;
   width: 2px;
   height: 38px;
   background: #1A1410;
@@ -219,9 +219,19 @@ nav button:hover, nav button.activ {
   position: absolute;
   width: 34px;
   height: 2px;
-  background: rgba(26,20,16,0.55);
+  background: rgba(26, 20, 16, 0.822);
   transform: translateX(-50%);
   display: none;
+}
+.portativ-accidental {
+  position: absolute;
+  display: none;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(26,20,16,0.95);
+  transform: translate(-26px, -50%);
+  pointer-events: none;
+  line-height: 1;
 }
 .portativ .octava-marker {
   position: absolute;

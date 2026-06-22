@@ -38,7 +38,7 @@ function cantaNotaMIDI(midi, durata = 0.8) {
 // ============================================================
 //  DATE NOTE & GAME
 // ============================================================
-const NOTE_OCTAVA = ['Do','Do#','Re','Re#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si'];
+const NOTE_OCTAVA = ['Do','Do# / Re♭','Re','Re# / Mi♭','Mi','Fa','Fa# / Sol♭','Sol','Sol# / La♭','La','La# / Si♭','Si'];
 const TIPAR_MAJOR = [2,2,1,2,2,2,1];
 const TIPAR_MINOR = [2,1,2,2,1,2,2];
 
@@ -180,35 +180,39 @@ function construiesteKb(idContainer, octava, gamaSet) {
 }
 
 const PORTATIV_MAP = {
-  60: { left: '10%', top: '142px', ledger: true, ledgerTop: '150px' },
-  61: { left: '16%', top: '132px', ledger: true, ledgerTop: '140px' },
-  62: { left: '22%', top: '124px' },
-  63: { left: '28%', top: '116px' },
-  64: { left: '34%', top: '108px' },
-  65: { left: '40%', top: '100px' },
-  66: { left: '46%', top: '92px' },
-  67: { left: '52%', top: '84px' },
-  68: { left: '58%', top: '76px' },
-  69: { left: '64%', top: '68px' },
-  70: { left: '70%', top: '60px' },
-  71: { left: '76%', top: '52px' },
-  72: { left: '82%', top: '44px' }
+  60: { left: '22%', top: '142px', ledger: true, ledgerTop: '141px' },
+  61: { left: '28%', top: '142px', ledger: true, ledgerTop: '141px' },
+  62: { left: '32%', top: '134px' },
+  63: { left: '38%', top: '134px' },
+  64: { left: '42%', top: '127px' },
+  65: { left: '46%', top: '116px' },
+  66: { left: '50%', top: '116px' },
+  67: { left: '54%', top: '105px' },
+  68: { left: '58%', top: '105px' },
+  69: { left: '64%', top: '94px' },
+  70: { left: '70%', top: '94px' },
+  71: { left: '76%', top: '83px' },
+  72: { left: '82%', top: '72px' }
 };
 
 function initPortativ() {
   const note = document.getElementById('portativ-note');
   const ledger = document.getElementById('portativ-ledger');
+  const acc = document.getElementById('portativ-accidental');
   if (note) note.style.display = 'none';
   if (ledger) ledger.style.display = 'none';
+  if (acc) acc.style.display = 'none';
 }
 
 function afiseazaNotaPortativ(midi) {
   const nota = PORTATIV_MAP[midi];
   const noteEl = document.getElementById('portativ-note');
   const ledgerEl = document.getElementById('portativ-ledger');
+  const accEl = document.getElementById('portativ-accidental');
   if (!noteEl || !nota) {
     if (noteEl) noteEl.style.display = 'none';
     if (ledgerEl) ledgerEl.style.display = 'none';
+    if (accEl) accEl.style.display = 'none';
     return;
   }
   noteEl.style.display = 'block';
@@ -220,6 +224,24 @@ function afiseazaNotaPortativ(midi) {
     ledgerEl.style.top = nota.ledgerTop || nota.top;
   } else if (ledgerEl) {
     ledgerEl.style.display = 'none';
+  }
+  // Show accidental for black-key semitones (dieze)
+  if (accEl) {
+    const semiton = midi % 12;
+    const blackSemitones = [1,3,6,8,10];
+    if (blackSemitones.includes(semiton)) {
+      accEl.style.display = 'block';
+      // Slightly shift Do# accidental a bit more to the left
+      if (semiton === 1) {
+        accEl.style.left = `calc(${nota.left} - 8px)`;
+      } else {
+        accEl.style.left = nota.left;
+      }
+      accEl.style.top = nota.top;
+      accEl.textContent = '#';
+    } else {
+      accEl.style.display = 'none';
+    }
   }
 }
 
