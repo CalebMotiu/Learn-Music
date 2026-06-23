@@ -78,12 +78,23 @@ function getMIDI(semi, octava) {
   return 12 * (octava + 1) + semi;
 }
 
+// ============================================================
+//  DIMENSIUNI RESPONSIVE
+// ============================================================
+function getDimensiuniTastatura() {
+  const windowWidth = window.innerWidth;
+  if (windowWidth < 700) {
+    return { lataAlba: 45, lataNeagra: 30 };
+  } else {
+    return { lataAlba: 52, lataNeagra: 34 };
+  }
+}
+
 function construiesteKb(idContainer, octava, gamaSet) {
   const container = document.getElementById(idContainer);
   container.innerHTML = '';
 
-  const lataAlba = 52;
-  const lataNeagra = 34;
+  const { lataAlba, lataNeagra } = getDimensiuniTastatura();
 
   // Albe
   ALBE_OFFSET.forEach((semi, i) => {
@@ -175,8 +186,7 @@ function construiesteKb(idContainer, octava, gamaSet) {
   });
 
   // Latime container
-  container.style.width = (8 * lataAlba) + 'px';
-  container.style.height = '190px';
+//   container.style.height = '190px';
 }
 
 const PORTATIV_MAP = {
@@ -606,3 +616,11 @@ function reiaQuiz() {
 // ============================================================
 construiesteKb('tastatura', octavaActuala, null);
 construiesteKb('tastatura2', 4, construiesteGama('Do', 'major'));
+
+// ============================================================
+//  RESPONSIVE RESIZE LISTENER
+// ============================================================
+window.addEventListener('resize', () => {
+  construiesteKb('tastatura', octavaActuala, null);
+  construiesteKb('tastatura2', 4, gamaSelectata || construiesteGama('Do', 'major'));
+});

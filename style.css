@@ -668,6 +668,10 @@ nav button:hover, nav button.activ {
 
 /* =================== RESPONSIVE =================== */
 @media (max-width: 700px) {
+  .taste-container { flex-wrap: wrap; justify-content: center; }
+  .clapa-alba { width: 45px;}
+  .clapa-neagra { width: 30px; } 
+  .piano-body { padding: 16px 10px 24px; }
   .optiuni-quiz { grid-template-columns: 1fr; }
   nav button { padding: 6px 12px; font-size: 0.78rem; }
 }
