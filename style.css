@@ -673,5 +673,6 @@ nav button:hover, nav button.activ {
   .clapa-neagra { width: 30px; } 
   .piano-body { padding: 16px 10px 24px; }
   .optiuni-quiz { grid-template-columns: 1fr; }
+  .sectiune { padding: 24px 10px 40px; }
   nav button { padding: 6px 12px; font-size: 0.78rem; }
 }
