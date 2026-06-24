@@ -12,10 +12,15 @@
 <header>
   <div class="logo">Piano<span>Ro</span></div>
   <nav>
-    <button class="activ" onclick="mergiLa('pian', this)">🎹 Pian</button>
-    <button onclick="mergiLa('invatare', this)">🎵 Game & Scale</button>
+    <div class="nav-dropdown" id="nav-instrumente">
+      <button class="activ nav-dropdown-trigger" id="btn-instrumente" onclick="toggleDropdown(event)">🎹 Instrumente <span class="dropdown-arrow">▾</span></button>
+      <div class="nav-dropdown-menu" id="dropdown-instrumente">
+        <button onclick="selectInstrument('pian', this)">🎹 Pian</button>
+        <button onclick="selectInstrument('chitara', this)">🎸 Chitară</button>
+      </div>
+    </div>
     <button onclick="mergiLa('lectii', this)">📖 Lecții</button>
-    <button onclick="mergiLa('quiz', this)">🧠 Quiz</button>
+    <button onclick="mergiLa('invatare', this)">🎵 Game & Scale</button>
   </nav>
 </header>
 
@@ -61,7 +66,41 @@
     </div>
   </div>
 
-  <!-- ============ SECTIUNEA GAME & SCALE ============ -->
+  <!-- ============ SECTIUNEA CHITARA ============ -->
+  <div class="sectiune" id="sec-chitara">
+    <div class="titlu-sec">Chitară Liberă</div>
+    <div class="subtitlu-sec">Alege un acord și vezi exact unde să pui degetele pe grif.</div>
+
+    <div class="chitara-layout">
+      <!-- Acord curent afisat -->
+      <div class="acord-curent" id="acord-curent">—</div>
+      <div class="acord-tip-label" id="acord-tip-label"></div>
+
+      <!-- Fretboard -->
+      <div class="fretboard-wrapper">
+        <div class="fretboard" id="fretboard">
+          <!-- Generat din JS -->
+        </div>
+      </div>
+
+      <!-- Legenda corzi -->
+      <div class="corzi-legenda">
+        <span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>
+      </div>
+
+      <!-- Selector acorduri -->
+      <div class="acorduri-section">
+        <div class="acorduri-categorie-tabs" id="acorduri-tabs">
+          <button class="acord-tab activ" onclick="selectCategorie('major', this)">Majore</button>
+          <button class="acord-tab" onclick="selectCategorie('minor', this)">Minore</button>
+          <button class="acord-tab" onclick="selectCategorie('7', this)">Septimă</button>
+        </div>
+        <div class="acorduri-grid" id="acorduri-grid"></div>
+      </div>
+    </div>
+  </div>
+
+
   <div class="sectiune" id="sec-invatare">
     <div class="titlu-sec">Game & Scări</div>
     <div class="subtitlu-sec">Explorează gamele majore și minore. Tastatura evidențiază automat notele.</div>

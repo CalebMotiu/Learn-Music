@@ -970,6 +970,186 @@ nav button:hover, nav button.activ {
   .lectie-4-steps { grid-template-columns: 1fr; }
   .step-item { flex-direction: row; }
 }
+/* =================== DROPDOWN NAV =================== */
+.nav-dropdown {
+  position: relative;
+}
+.nav-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dropdown-arrow {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: rgba(26,20,16,0.98);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 12px;
+  padding: 6px;
+  min-width: 160px;
+  z-index: 200;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+  animation: fadeIn 0.15s ease;
+}
+.nav-dropdown-menu.deschis {
+  display: block;
+}
+.nav-dropdown-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: 8px;
+  margin: 0;
+  border: none !important;
+  color: var(--text-muted);
+  padding: 9px 14px;
+  background: transparent;
+  font-size: 0.9rem;
+}
+.nav-dropdown-menu button:hover {
+  background: rgba(201,168,76,0.12) !important;
+  color: var(--gold) !important;
+  border: none !important;
+  font-weight: 400;
+}
+
+/* =================== CHITARA =================== */
+.chitara-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.acord-curent {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gold);
+  min-height: 60px;
+  text-align: center;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.acord-tip-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  min-height: 20px;
+  text-align: center;
+  margin-top: -6px;
+}
+
+.fretboard-wrapper {
+  background: linear-gradient(180deg, #2A1F14 0%, #1A1008 100%);
+  border-radius: 12px;
+  padding: 28px 32px 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,168,76,0.15);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: center;
+}
+
+#fretboard {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.corzi-legenda {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  max-width: 420px;
+  justify-content: space-around;
+  padding: 0 20px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* Selector acorduri */
+.acorduri-section {
+  width: 100%;
+  max-width: 580px;
+}
+
+.acorduri-categorie-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  justify-content: center;
+}
+.acord-tab {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-muted);
+  padding: 7px 22px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.acord-tab:hover, .acord-tab.activ {
+  background: rgba(201,168,76,0.12);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.acorduri-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 10px;
+}
+
+.acord-chip {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-light);
+  padding: 12px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.2s;
+}
+.acord-chip:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.4);
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+.acord-chip.selectat {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+}
+
+@media (max-width: 700px) {
+  .fretboard-wrapper { padding: 18px 12px 16px; }
+  .acorduri-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
+  .acord-chip { padding: 10px 6px; font-size: 0.88rem; }
+  .acord-curent { font-size: 2.2rem; }
+  .corzi-legenda { padding: 0 8px; font-size: 0.7rem; }
+}
+
 /* =================== RESPONSIVE =================== */
 @media (max-width: 700px) {
   .taste-container { flex-wrap: wrap; justify-content: center; }
