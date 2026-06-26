@@ -17,6 +17,7 @@
       <div class="nav-dropdown-menu" id="dropdown-instrumente">
         <button onclick="selectInstrument('pian', this)">🎹 Pian</button>
         <button onclick="selectInstrument('chitara', this)">🎸 Chitară</button>
+        <button onclick="selectInstrument('mandolina', this)">🪕 Mandolină</button>
       </div>
     </div>
     <button onclick="mergiLa('lectii', this)">📖 Lecții</button>
@@ -132,6 +133,44 @@
       <span style="color:#70B8F0;">■</span> Tonică &nbsp;
       <span style="color:#A0E060;">■</span> Note din gamă &nbsp;
       <span style="color:rgba(255,255,255,0.25);">■</span> Note în afara gamei
+    </div>
+  </div>
+
+  <!-- ============ SECTIUNEA MANDOLINA ============ -->
+  <!-- Adaugă acest bloc în index.html, după sec-chitara și înainte de sec-invatare -->
+  <div class="sectiune" id="sec-mandolina">
+    <div class="titlu-sec">Mandolină</div>
+    <div class="subtitlu-sec">Selectează o notă de pe portativ și vezi exact unde să pui degetul pe grif.</div>
+
+    <div class="chitara-layout">
+
+      <!-- Fretboard mandolină -->
+      <div class="fretboard-wrapper">
+        <div class="fretboard" id="mandolina-fretboard">
+          <!-- Generat din JS -->
+        </div>
+      </div>
+
+      <!-- Legenda corzi (de la G3 stânga la E5 dreapta) -->
+      <div class="corzi-legenda" style="max-width:320px;">
+        <span>G3</span><span>D4</span><span>A4</span><span>E5</span>
+      </div>
+
+      <!-- Nota curentă -->
+      <div class="nota-curenta" id="mandolina-nota-curenta">—</div>
+
+      <!-- Selector mod: simplu / diez / bemol -->
+      <div class="mand-mod-selector">
+        <button class="mand-mod-btn activ" onclick="selectModMandolina('simplu', this)">♩ Simplu</button>
+        <button class="mand-mod-btn" onclick="selectModMandolina('diez', this)"># Diez</button>
+        <button class="mand-mod-btn" onclick="selectModMandolina('bemol', this)">♭ Bemol</button>
+      </div>
+
+      <!-- Portativ interactiv Sol3–Mi5 -->
+      <div class="mand-portativ-container">
+        <div id="mandolina-portativ-wrapper"></div>
+      </div>
+
     </div>
   </div>
 

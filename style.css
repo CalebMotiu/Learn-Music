@@ -1160,3 +1160,65 @@ nav button:hover, nav button.activ {
   .sectiune { padding: 24px 10px 40px; }
   nav button { padding: 6px 12px; font-size: 0.78rem; }
 }
+
+/* =================== MANDOLINA =================== */
+
+/* Selector mod simplu / diez / bemol */
+.mand-mod-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mand-mod-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text-muted);
+  padding: 9px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.mand-mod-btn:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.4);
+  color: var(--gold);
+}
+
+.mand-mod-btn.activ {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 2px 12px rgba(201,168,76,0.15);
+}
+
+/* Container portativ mandolină */
+.mand-portativ-container {
+  width: 100%;
+  max-width: 580px;
+  background: linear-gradient(180deg, #2A1F14 0%, #1A1008 100%);
+  border-radius: 12px;
+  padding: 24px 20px 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,168,76,0.15);
+  display: flex;
+  justify-content: center;
+}
+
+/* SVG portativ (fundalul alb e în SVG) */
+.mand-portativ {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mand-portativ svg {
+  border-radius: 8px;
+  display: block;
+}
