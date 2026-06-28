@@ -86,7 +86,7 @@ function deseneazaFretboard(midi) {
 
   // Spațiere mai mare pentru corzile duble
   const pairSpacing = isMobile ? 48 : 60; // distanța între perechi
-  const twinOffset  = 2; // distanța între cele două corzi dintr-o pereche
+  const twinOffset  = 6; // distanța între cele două corzi dintr-o pereche
   const fretSpacing = isMobile ? 52 : 62;
   const paddingLeft = 52;
   const paddingTop  = 28;
@@ -101,9 +101,9 @@ function deseneazaFretboard(midi) {
 
   // Nut
   const nut = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  nut.setAttribute('x', paddingLeft - 2);
+  nut.setAttribute('x', paddingLeft - 8);
   nut.setAttribute('y', paddingTop);
-  nut.setAttribute('width', (NR_CORZI_VIZUALE - 1) * pairSpacing + twinOffset + 4);
+  nut.setAttribute('width', (NR_CORZI_VIZUALE - 1) * pairSpacing + twinOffset + 10);
   nut.setAttribute('height', 6);
   nut.setAttribute('rx', '2');
   nut.setAttribute('fill', '#C9A84C');
@@ -113,9 +113,9 @@ function deseneazaFretboard(midi) {
   for (let f = 0; f <= NR_CASETE; f++) {
     const y = paddingTop + f * fretSpacing;
     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', paddingLeft);
+    line.setAttribute('x1', paddingLeft - 2);
     line.setAttribute('y1', y);
-    line.setAttribute('x2', paddingLeft + (NR_CORZI_VIZUALE - 1) * pairSpacing + twinOffset);
+    line.setAttribute('x2', paddingLeft + (NR_CORZI_VIZUALE - 1) * pairSpacing + twinOffset - 2);
     line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(255,255,255,0.18)');
     line.setAttribute('stroke-width', f === 0 ? '0' : '1.5');
@@ -198,55 +198,28 @@ function deseneazaFretboard(midi) {
 }
 
 // ── Portativ ─────────────────────────────────────────────────────────────────
-//
-// Portativ mai mare: H=300, linii la Y:
-//   L1=170, L2=150, L3=130, L4=110, L5=90  (de jos în sus)
-// Spații: Sp1=160, Sp2=140, Sp3=120, Sp4=100, Sp5=80
-//
-// Notele naturale:
-//   Sol3 (55) → sub portativ, a 2-a linie ajut. de sub L1
-//   La3  (57) → spațiu liber între L.aj.Sol3 și L.aj.Do4  (Y=218)
-//   Si3  (59) → linia ajut. Do4 vizibila, Si3 in spatiul de deasupra → Y=202 (spatiu deasupra L.aj.Do4)
-//   Do4  (60) → linie ajut. sub L1  (Y=192)  ← prima linie sub portativ
-//   Re4  (62) → spațiu sub L1  (Y=180)
-//   Mi4  (64) → L1  (Y=170)
-//   Fa4  (65) → Sp1  (Y=160)
-//   Sol4 (67) → L2   (Y=150)
-//   La4  (69) → Sp2  (Y=140)
-//   Si4  (71) → L3   (Y=130)
-//   Do5  (72) → Sp3  (Y=120)
-//   Re5  (74) → L4   (Y=110)
-//   Mi5  (76) → Sp4  (Y=100)
-//
-// Linii ajutătoare:
-//   Do4: linie la Y=192
-//   La3: linia Do4 (Y=192) + linia proprie La3 (Y=228)
-//   Sol3: liniile Do4 (Y=192), La3 (Y=228), Sol3 (Y=244)
-
-const W = 620;
-const H = 310;
-
-// Liniile portativului — spațiu 22px (identic cu portativul de la pian)
-// L1(Mi4)=170, L2(Sol4)=148, L3(Si4)=126, L4(Re5)=104, L5(Fa5)=82
-const LINII_PORTATIV_Y = [170, 148, 126, 104, 82];
-
+const W = 800;
+const H = 300;
+ 
+// Liniile portativului — spațiu 26px (față de 22px anterior)
+// L1(Mi4)=196, L2(Sol4)=170, L3(Si4)=144, L4(Re5)=118, L5(Fa5)=92
+const LINII_PORTATIV_Y = [196, 170, 144, 118, 92];
+ 
 // Harta MIDI → { y, ledgers }
-// Pas între trepte = 11px (jumătate din spațiul de 22px dintre linii)
-// L1=170 → spațiu sub=181 → L.aj.Do4=192 → spațiu Si3=203 → L.aj.La3=214 → spațiu Sol3=225
 const PORTATIV_MAP_MAND = {
-  55: { y: 225, ledgers: [{ y: 192 }, { y: 214 }] }, // Sol3 — spațiu sub L.aj.La3
-  57: { y: 214, ledgers: [{ y: 192 }, { y: 214 }] }, // La3  — a 2-a linie ajut.
-  59: { y: 203, ledgers: [{ y: 192 }] },              // Si3  — spațiu între L.aj.Do4 și L.aj.La3
-  60: { y: 192, ledgers: [{ y: 192 }] },              // Do4  — prima linie ajut. sub L1
-  62: { y: 181, ledgers: [] },                        // Re4  — spațiu sub L1
-  64: { y: 170, ledgers: [] },                        // Mi4  — L1
-  65: { y: 159, ledgers: [] },                        // Fa4  — spațiu L1-L2
-  67: { y: 148, ledgers: [] },                        // Sol4 — L2
-  69: { y: 137, ledgers: [] },                        // La4  — spațiu L2-L3
-  71: { y: 126, ledgers: [] },                        // Si4  — L3
-  72: { y: 115, ledgers: [] },                        // Do5  — spațiu L3-L4
-  74: { y: 104, ledgers: [] },                        // Re5  — L4
-  76: { y:  93, ledgers: [] },                        // Mi5  — spațiu L4-L5
+  55: { y: 261, ledgers: [{ y: 222 }, { y: 248 }] }, // Sol3 — spațiu sub L.aj.La3
+  57: { y: 248, ledgers: [{ y: 222 }, { y: 248 }] }, // La3  — a 2-a linie ajut.
+  59: { y: 235, ledgers: [{ y: 222 }] },              // Si3  — spațiu între aj.Do4 și aj.La3
+  60: { y: 222, ledgers: [{ y: 222 }] },              // Do4  — prima linie ajut. sub L1
+  62: { y: 209, ledgers: [] },                        // Re4  — spațiu sub L1
+  64: { y: 196, ledgers: [] },                        // Mi4  — L1
+  65: { y: 183, ledgers: [] },                        // Fa4  — spațiu L1-L2
+  67: { y: 170, ledgers: [] },                        // Sol4 — L2
+  69: { y: 157, ledgers: [] },                        // La4  — spațiu L2-L3
+  71: { y: 144, ledgers: [] },                        // Si4  — L3
+  72: { y: 131, ledgers: [] },                        // Do5  — spațiu L3-L4
+  74: { y: 118, ledgers: [] },                        // Re5  — L4
+  76: { y: 105, ledgers: [] },                        // Mi5  — spațiu L4-L5
 };
 
 function isAlterat(midi) {
@@ -313,8 +286,8 @@ export function randeazaPortativMandolina() {
   // Cheie Sol — poziționată ca să se alinieze cu L1..L4
   const clef = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   clef.setAttribute('x', '14');
-  clef.setAttribute('y', '210');
-  clef.setAttribute('font-size', '140');
+  clef.setAttribute('y', '200');
+  clef.setAttribute('font-size', '200');
   clef.setAttribute('fill', '#1A1410');
   clef.setAttribute('font-family', 'serif');
   clef.textContent = '𝄞';
@@ -324,8 +297,8 @@ export function randeazaPortativMandolina() {
   const xStart = 68;
   LINII_PORTATIV_Y.forEach(y => {
     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', xStart); line.setAttribute('y1', y);
-    line.setAttribute('x2', W - 12); line.setAttribute('y2', y);
+    line.setAttribute('x1', 0); line.setAttribute('y1', y);
+    line.setAttribute('x2', W); line.setAttribute('y2', y);
     line.setAttribute('stroke', 'rgba(26,20,16,0.75)');
     line.setAttribute('stroke-width', '1.5');
     svg.appendChild(line);
@@ -387,8 +360,8 @@ export function randeazaPortativMandolina() {
     const nota = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
     nota.setAttribute('cx', x);
     nota.setAttribute('cy', y);
-    nota.setAttribute('rx', '9');
-    nota.setAttribute('ry', '7');
+    nota.setAttribute('rx', '13');
+    nota.setAttribute('ry', '10');
 
     let fillColor;
     if (eSelectata) {
@@ -413,8 +386,8 @@ export function randeazaPortativMandolina() {
     const hitArea = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     hitArea.setAttribute('x', x - 16);
     hitArea.setAttribute('y', y - 12);
-    hitArea.setAttribute('width', '32');
-    hitArea.setAttribute('height', '24');
+    hitArea.setAttribute('width', '36');
+    hitArea.setAttribute('height', '28');
     hitArea.setAttribute('fill', 'transparent');
     hitArea.style.cursor = 'pointer';
     hitArea.addEventListener('click', () => selecteazaNota(midi));
