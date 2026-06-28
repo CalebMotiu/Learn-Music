@@ -1,0 +1,96 @@
+// ============================================================
+//  METRONOM
+// ============================================================
+
+let metroBpm     = 120;
+let metroInterval = null;
+let metroBeat    = 0;
+let metroPornit  = false;
+let metroCtx     = null;
+
+// ── Popup toggle ─────────────────────────────────────────────
+export function toggleMetronomPopup() {
+  document.getElementById('metronom-popup').classList.toggle('deschis');
+  document.getElementById('metronom-overlay').classList.toggle('deschis');
+}
+
+export function inchideMetronom() {
+  document.getElementById('metronom-popup').classList.remove('deschis');
+  document.getElementById('metronom-overlay').classList.remove('deschis');
+}
+
+// ── BPM ──────────────────────────────────────────────────────
+export function setBpm(val) {
+  metroBpm = parseInt(val);
+  document.getElementById('metro-bpm-val').textContent = metroBpm;
+  document.getElementById('metro-slider').value = metroBpm;
+  if (metroPornit) {
+    clearInterval(metroInterval);
+    pornesteMetronom();
+  }
+}
+
+// ── Audio click ───────────────────────────────────────────────
+function clickAudio(estePrim) {
+  if (!metroCtx) metroCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (metroCtx.state === 'suspended') metroCtx.resume();
+
+  const osc  = metroCtx.createOscillator();
+  const gain = metroCtx.createGain();
+  osc.connect(gain);
+  gain.connect(metroCtx.destination);
+
+  osc.type = 'sine';
+  osc.frequency.value = estePrim ? 1000 : 800;
+  gain.gain.setValueAtTime(0.5, metroCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, metroCtx.currentTime + 0.08);
+  osc.start();
+  osc.stop(metroCtx.currentTime + 0.08);
+}
+
+// ── O bătaie ─────────────────────────────────────────────────
+function bat() {
+  // Puncte vizuale
+  document.querySelectorAll('.metronom-beat-dot').forEach(d => d.classList.remove('activ'));
+  const dot = document.getElementById('beat-' + metroBeat);
+  if (dot) dot.classList.add('activ');
+
+  // Sunet
+  clickAudio(metroBeat === 0);
+
+  // Pendul SVG
+  const pendul = document.getElementById('pendul-svg');
+  if (pendul) {
+    pendul.setAttribute('x2', metroBeat % 2 === 0 ? '16' : '8');
+  }
+
+  metroBeat = (metroBeat + 1) % 4;
+}
+
+// ── Pornire / oprire ─────────────────────────────────────────
+function pornesteMetronom() {
+  const intervalMs = (60 / metroBpm) * 1000;
+  metroBeat = 0;
+  bat();
+  metroInterval = setInterval(bat, intervalMs);
+}
+
+export function toggleMetronom() {
+  const btn = document.getElementById('metro-start-btn');
+  if (!metroPornit) {
+    metroPornit = true;
+    btn.textContent = '⏹ Stop';
+    btn.classList.add('pornit');
+    pornesteMetronom();
+  } else {
+    metroPornit = false;
+    btn.textContent = '▶ Start';
+    btn.classList.remove('pornit');
+    clearInterval(metroInterval);
+    metroInterval = null;
+    metroBeat = 0;
+    document.querySelectorAll('.metronom-beat-dot').forEach(d => d.classList.remove('activ'));
+    const pendul = document.getElementById('pendul-svg');
+    if (pendul) pendul.setAttribute('x2', '16');
+  }
+}

@@ -1222,3 +1222,218 @@ nav button:hover, nav button.activ {
   border-radius: 8px;
   display: block;
 }
+
+/* =================== HAMBURGER MOBILE =================== */
+.hamburger-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(26,20,16,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  padding: 8px;
+  z-index: 200;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+}
+.mobile-menu.deschis { display: flex; }
+
+.mobile-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mobile-menu button:hover,
+.mobile-menu button.activ {
+  background: rgba(201,168,76,0.1);
+  color: var(--gold);
+}
+.mobile-menu .mobile-sep {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 4px 0;
+}
+
+@media (max-width: 700px) {
+  header { padding: 14px 16px; position: relative; }
+  nav { display: none; }
+  .hamburger-btn { display: flex; }
+}
+
+/* =================== METRONOM =================== */
+.metronom-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.4), 0 2px 8px rgba(0,0,0,0.4);
+  z-index: 300;
+  transition: transform 0.15s, background 0.15s;
+}
+.metronom-fab:hover { background: var(--gold-light); transform: scale(1.07); }
+.metronom-fab:active { transform: scale(0.96); }
+.metronom-fab svg { width: 28px; height: 28px; }
+
+.metronom-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 290;
+}
+.metronom-overlay.deschis { display: block; }
+
+.metronom-popup {
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  width: 280px;
+  background: rgba(26,20,16,0.98);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 16px;
+  padding: 24px 20px 20px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+  z-index: 295;
+  display: none;
+}
+.metronom-popup.deschis { display: block; }
+
+.metronom-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+.metronom-bpm-display {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.metronom-bpm-label {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.metronom-slider {
+  width: 100%;
+  margin-bottom: 20px;
+  accent-color: var(--gold);
+}
+
+.metronom-masura-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.metronom-masura-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.metronom-masura-btn:hover {
+  border-color: rgba(201,168,76,0.4);
+  color: var(--gold);
+}
+.metronom-masura-btn.activ {
+  background: rgba(201,168,76,0.15);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.metronom-beat-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.metronom-beat-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  transition: background 0.05s, transform 0.05s;
+}
+.metronom-beat-dot.activ {
+  background: var(--gold);
+  transform: scale(1.2);
+}
+.metronom-beat-dot.accent {
+  width: 18px;
+  height: 18px;
+}
+
+.metronom-start-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: var(--gold);
+  color: var(--ebony);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.metronom-start-btn:hover { background: var(--gold-light); }
+.metronom-start-btn:active { transform: scale(0.98); }
+.metronom-start-btn.pornit {
+  background: rgba(139,32,48,0.85);
+  color: #fff;
+}
+.metronom-start-btn.pornit:hover { background: rgba(160,40,56,0.9); }

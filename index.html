@@ -11,18 +11,33 @@
 
 <header>
   <div class="logo">Piano<span>Ro</span></div>
-  <nav>
+
+  <!-- Nav desktop (ascuns pe mobil) -->
+  <nav id="nav-desktop">
     <div class="nav-dropdown" id="nav-instrumente">
       <button class="activ nav-dropdown-trigger" id="btn-instrumente" onclick="toggleDropdown(event)">🎹 Instrumente <span class="dropdown-arrow">▾</span></button>
       <div class="nav-dropdown-menu" id="dropdown-instrumente">
-        <button onclick="selectInstrument('pian', this)">🎹 Pian</button>
-        <button onclick="selectInstrument('chitara', this)">🎸 Chitară</button>
-        <button onclick="selectInstrument('mandolina', this)">🪕 Mandolină</button>
+        <button onclick="selectInstrument('pian')">🎹 Pian</button>
+        <button onclick="selectInstrument('chitara')">🎸 Chitară</button>
+        <button onclick="selectInstrument('mandolina')">🪕 Mandolină</button>
       </div>
     </div>
     <button onclick="mergiLa('lectii', this)">📖 Lecții</button>
     <button onclick="mergiLa('invatare', this)">🎵 Game & Scale</button>
   </nav>
+
+  <!-- Hamburger mobil -->
+  <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Meniu">☰</button>
+
+  <!-- Meniu mobil dropdown -->
+  <div class="mobile-menu" id="mobile-menu">
+    <button data-id="pian"       onclick="selectInstrumentMobil('pian')">🎹 Pian</button>
+    <button data-id="chitara"    onclick="selectInstrumentMobil('chitara')">🎸 Chitară</button>
+    <button data-id="mandolina"  onclick="selectInstrumentMobil('mandolina')">🪕 Mandolină</button>
+    <div class="mobile-sep"></div>
+    <button data-id="lectii"    onclick="mergiLaMobil('lectii')">📖 Lecții</button>
+    <button data-id="invatare"  onclick="mergiLaMobil('invatare')">🎵 Game & Scale</button>
+  </div>
 </header>
 
 <div class="app">
@@ -73,23 +88,17 @@
     <div class="subtitlu-sec">Alege un acord și vezi exact unde să pui degetele pe grif.</div>
 
     <div class="chitara-layout">
-      <!-- Acord curent afisat -->
       <div class="acord-curent" id="acord-curent">—</div>
       <div class="acord-tip-label" id="acord-tip-label"></div>
 
-      <!-- Fretboard -->
       <div class="fretboard-wrapper">
-        <div class="fretboard" id="fretboard">
-          <!-- Generat din JS -->
-        </div>
+        <div class="fretboard" id="fretboard"></div>
       </div>
 
-      <!-- Legenda corzi -->
       <div class="corzi-legenda">
         <span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>
       </div>
 
-      <!-- Selector acorduri -->
       <div class="acorduri-section">
         <div class="acorduri-categorie-tabs" id="acorduri-tabs">
           <button class="acord-tab activ" onclick="selectCategorie('major', this)">Majore</button>
@@ -101,7 +110,7 @@
     </div>
   </div>
 
-
+  <!-- ============ SECTIUNEA GAME & SCALE ============ -->
   <div class="sectiune" id="sec-invatare">
     <div class="titlu-sec">Game & Scări</div>
     <div class="subtitlu-sec">Explorează gamele majore și minore. Tastatura evidențiază automat notele.</div>
@@ -137,36 +146,28 @@
   </div>
 
   <!-- ============ SECTIUNEA MANDOLINA ============ -->
-  <!-- Adaugă acest bloc în index.html, după sec-chitara și înainte de sec-invatare -->
   <div class="sectiune" id="sec-mandolina">
     <div class="titlu-sec">Mandolină</div>
     <div class="subtitlu-sec">Selectează o notă de pe portativ și vezi exact unde să pui degetul pe grif.</div>
 
     <div class="chitara-layout">
 
-      <!-- Fretboard mandolină -->
       <div class="fretboard-wrapper">
-        <div class="fretboard" id="mandolina-fretboard">
-          <!-- Generat din JS -->
-        </div>
+        <div class="fretboard" id="mandolina-fretboard"></div>
       </div>
 
-      <!-- Legenda corzi (de la G3 stânga la E5 dreapta) -->
       <div class="corzi-legenda" style="max-width:320px;">
         <span>G3</span><span>D4</span><span>A4</span><span>E5</span>
       </div>
 
-      <!-- Nota curentă -->
       <div class="nota-curenta" id="mandolina-nota-curenta">—</div>
 
-      <!-- Selector mod: simplu / diez / bemol -->
       <div class="mand-mod-selector">
         <button class="mand-mod-btn activ" onclick="selectModMandolina('simplu', this)">♩ Simplu</button>
         <button class="mand-mod-btn" onclick="selectModMandolina('diez', this)"># Diez</button>
         <button class="mand-mod-btn" onclick="selectModMandolina('bemol', this)">♭ Bemol</button>
       </div>
 
-      <!-- Portativ interactiv Sol3–Mi5 -->
       <div class="mand-portativ-container">
         <div id="mandolina-portativ-wrapper"></div>
       </div>
@@ -204,18 +205,6 @@
           <div class="lectie-desc">Descoperă cum se numără notele și cât durează fiecare valoare muzicală.</div>
           <div class="lectie-tag">Ritm</div>
         </div>
-        <!-- <div class="lectie-card" onclick="deschideLectie()">
-          <div class="lectie-nr">Lecția 0</div>
-          <div class="lectie-titlu">Gama Minoră</div>
-          <div class="lectie-desc">Tiparul gamei minore și de ce sună mai melancolică decât cea majoră.</div>
-          <div class="lectie-tag">Game</div>
-        </div>
-        <div class="lectie-card" onclick="deschideLectie()">
-          <div class="lectie-nr">Lecția 0</div>
-          <div class="lectie-titlu">Acorduri de bază</div>
-          <div class="lectie-desc">Cum se formează un acord major și minor din 3 note.</div>
-          <div class="lectie-tag">Armonie</div>
-        </div> -->
       </div>
     </div>
 
@@ -254,7 +243,44 @@
     </div>
   </div>
 
+</div><!-- /.app -->
+
+<!-- ============ METRONOM FAB ============ -->
+<div class="metronom-overlay" id="metronom-overlay" onclick="inchideMetronom()"></div>
+
+<div class="metronom-popup" id="metronom-popup">
+  <div class="metronom-title">🎵 Metronom</div>
+  <div class="metronom-bpm-display" id="metro-bpm-val">120</div>
+  <div class="metronom-bpm-label">BPM</div>
+  <input type="range" class="metronom-slider" id="metro-slider"
+    min="20" max="240" value="120" step="1"
+    oninput="setBpm(this.value)">
+  <div class="metronom-presets">
+    <button class="metronom-preset-btn" onclick="setBpm(60)">Largo<br><small>60</small></button>
+    <button class="metronom-preset-btn" onclick="setBpm(76)">Andante<br><small>76</small></button>
+    <button class="metronom-preset-btn" onclick="setBpm(108)">Moderato<br><small>108</small></button>
+    <button class="metronom-preset-btn" onclick="setBpm(132)">Allegro<br><small>132</small></button>
+    <button class="metronom-preset-btn" onclick="setBpm(176)">Presto<br><small>176</small></button>
+  </div>
+  <div class="metronom-beat-row" id="metro-beats">
+    <div class="metronom-beat-dot" id="beat-0"></div>
+    <div class="metronom-beat-dot" id="beat-1"></div>
+    <div class="metronom-beat-dot" id="beat-2"></div>
+    <div class="metronom-beat-dot" id="beat-3"></div>
+  </div>
+  <button class="metronom-start-btn" id="metro-start-btn" onclick="toggleMetronom()">▶ Start</button>
 </div>
+
+<button class="metronom-fab" id="metronom-fab" onclick="toggleMetronomPopup()" aria-label="Metronom">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#1A1410" stroke-width="1.8"
+       stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="12,2 20,22 4,22"/>
+    <line x1="12" y1="6" x2="12" y2="14"/>
+    <line x1="8"  y1="22" x2="16" y2="22"/>
+    <line x1="12" y1="8"  x2="16" y2="14" id="pendul-svg"/>
+  </svg>
+</button>
+
 <script type="module" src="js/main.js"></script>
 </body>
 </html>
