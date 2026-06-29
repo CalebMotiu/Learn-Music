@@ -9,7 +9,35 @@ let metroPornit   = false;
 let metroCtx      = null;
 let metroMasura   = 2; // 2, 3 sau 4
 
-// ── Popup toggle ─────────────────────────────────────────────
+// ── Actualizare UI stare pornit/oprit ────────────────────────
+function actualizeazaStare() {
+  const startBtn = document.getElementById('metro-start-btn');
+  if (metroPornit) {
+    if (startBtn) { startBtn.innerHTML = '⏹ Stop'; startBtn.classList.add('pornit'); }
+  } else {
+    if (startBtn) { startBtn.innerHTML = '▶ Start'; startBtn.classList.remove('pornit'); }
+    document.querySelectorAll('.metronom-beat-dot').forEach(d => d.classList.remove('activ'));
+    const pendul = document.getElementById('pendul-svg');
+    if (pendul) pendul.setAttribute('x2', '16');
+  }
+}
+
+// ── Buton nav — doar arată/ascunde FAB, fără audio ───────────
+let fabVizibil = false;
+export function toggleMetronomNav() {
+  fabVizibil = !fabVizibil;
+  const navBtn = document.getElementById('btn-metronom-nav');
+  const fab    = document.getElementById('metronom-fab');
+  if (fabVizibil) {
+    if (navBtn) navBtn.classList.add('activ-metronom');
+    if (fab)    fab.classList.add('vizibil');
+  } else {
+    if (navBtn) navBtn.classList.remove('activ-metronom');
+    if (fab)    fab.classList.remove('vizibil');
+  }
+}
+
+// ── Popup toggle (doar FAB) ───────────────────────────────────
 export function toggleMetronomPopup() {
   document.getElementById('metronom-popup').classList.toggle('deschis');
   document.getElementById('metronom-overlay').classList.toggle('deschis');
@@ -100,26 +128,20 @@ function pornesteMetronom() {
 
 // ── Start / Stop ─────────────────────────────────────────────
 export function toggleMetronom() {
-  const btn = document.getElementById('metro-start-btn');
   if (!metroPornit) {
     metroPornit = true;
-    btn.innerHTML = '⏹ Stop';
-    btn.classList.add('pornit');
     pornesteMetronom();
   } else {
     metroPornit = false;
-    btn.innerHTML = '▶ Start';
-    btn.classList.remove('pornit');
     clearInterval(metroInterval);
     metroInterval = null;
     metroBeat = 0;
-    document.querySelectorAll('.metronom-beat-dot').forEach(d => d.classList.remove('activ'));
-    const pendul = document.getElementById('pendul-svg');
-    if (pendul) pendul.setAttribute('x2', '16');
   }
+  actualizeazaStare();
 }
 
 // ── Init ─────────────────────────────────────────────────────
 export function initMetronom() {
   construiestePuncte();
+  actualizeazaStare();
 }
