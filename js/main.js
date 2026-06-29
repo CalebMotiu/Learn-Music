@@ -9,7 +9,7 @@ import { incepeQuiz, urmatoareaIntrebare, reiaQuiz } from './quiz.js';
 import { mergiLa, toggleDropdown, selectInstrument } from './navigare.js';
 import { selectCategorie } from './guitar.js';
 import { initMandolina, randeazaPortativMandolina, selectModMandolina } from './mandolina.js';
-import { toggleMetronomPopup, inchideMetronom, setBpm, toggleMetronom } from './metronom.js';
+import { toggleMetronomPopup, inchideMetronom, setBpm, setMasura, toggleMetronom, initMetronom } from './metronom.js';
 import { toggleMobileMenu, selectInstrumentMobil, mergiLaMobil, initHamburger } from './hamburger.js';
 
 // ── Inițializare ─────────────────────────────────────────────
@@ -17,6 +17,7 @@ construiesteKb('tastatura', octavaActuala, null);
 construiesteKb('tastatura2', 4, construiesteGama('Do', 'major'));
 initTastaturaPiano();
 initHamburger();
+initMetronom();
 
 // ── Resize responsiv ─────────────────────────────────────────
 window.addEventListener('resize', () => {
@@ -45,6 +46,7 @@ window.selectModMandolina   = selectModMandolina;
 window.toggleMetronomPopup  = toggleMetronomPopup;
 window.inchideMetronom      = inchideMetronom;
 window.setBpm               = setBpm;
+window.setMasura            = setMasura;
 window.toggleMetronom       = toggleMetronom;
 
 // ── Hamburger mobil ───────────────────────────────────────────

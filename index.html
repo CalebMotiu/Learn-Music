@@ -255,19 +255,12 @@
   <input type="range" class="metronom-slider" id="metro-slider"
     min="20" max="240" value="120" step="1"
     oninput="setBpm(this.value)">
-  <div class="metronom-presets">
-    <button class="metronom-preset-btn" onclick="setBpm(60)">Largo<br><small>60</small></button>
-    <button class="metronom-preset-btn" onclick="setBpm(76)">Andante<br><small>76</small></button>
-    <button class="metronom-preset-btn" onclick="setBpm(108)">Moderato<br><small>108</small></button>
-    <button class="metronom-preset-btn" onclick="setBpm(132)">Allegro<br><small>132</small></button>
-    <button class="metronom-preset-btn" onclick="setBpm(176)">Presto<br><small>176</small></button>
+  <div class="metronom-masura-row">
+    <button class="metronom-masura-btn activ" onclick="setMasura(2, this)">2/4</button>
+    <button class="metronom-masura-btn" onclick="setMasura(3, this)">3/4</button>
+    <button class="metronom-masura-btn" onclick="setMasura(4, this)">4/4</button>
   </div>
-  <div class="metronom-beat-row" id="metro-beats">
-    <div class="metronom-beat-dot" id="beat-0"></div>
-    <div class="metronom-beat-dot" id="beat-1"></div>
-    <div class="metronom-beat-dot" id="beat-2"></div>
-    <div class="metronom-beat-dot" id="beat-3"></div>
-  </div>
+  <div class="metronom-beat-row" id="metro-beats"></div>
   <button class="metronom-start-btn" id="metro-start-btn" onclick="toggleMetronom()">▶ Start</button>
 </div>
 

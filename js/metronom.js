@@ -2,11 +2,12 @@
 //  METRONOM
 // ============================================================
 
-let metroBpm     = 120;
+let metroBpm      = 120;
 let metroInterval = null;
-let metroBeat    = 0;
-let metroPornit  = false;
-let metroCtx     = null;
+let metroBeat     = 0;
+let metroPornit   = false;
+let metroCtx      = null;
+let metroMasura   = 2; // 2, 3 sau 4
 
 // ── Popup toggle ─────────────────────────────────────────────
 export function toggleMetronomPopup() {
@@ -30,6 +31,31 @@ export function setBpm(val) {
   }
 }
 
+// ── Măsură ───────────────────────────────────────────────────
+export function setMasura(val, btn) {
+  metroMasura = parseInt(val);
+  document.querySelectorAll('.metronom-masura-btn').forEach(b => b.classList.remove('activ'));
+  btn.classList.add('activ');
+  construiestePuncte();
+  if (metroPornit) {
+    clearInterval(metroInterval);
+    metroBeat = 0;
+    pornesteMetronom();
+  }
+}
+
+function construiestePuncte() {
+  const row = document.getElementById('metro-beats');
+  if (!row) return;
+  row.innerHTML = '';
+  for (let i = 0; i < metroMasura; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'metronom-beat-dot' + (i === 0 ? ' accent' : '');
+    dot.id = 'beat-' + i;
+    row.appendChild(dot);
+  }
+}
+
 // ── Audio click ───────────────────────────────────────────────
 function clickAudio(estePrim) {
   if (!metroCtx) metroCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -41,8 +67,8 @@ function clickAudio(estePrim) {
   gain.connect(metroCtx.destination);
 
   osc.type = 'sine';
-  osc.frequency.value = estePrim ? 1000 : 800;
-  gain.gain.setValueAtTime(0.5, metroCtx.currentTime);
+  osc.frequency.value = estePrim ? 1000 : 700;
+  gain.gain.setValueAtTime(estePrim ? 0.6 : 0.35, metroCtx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.001, metroCtx.currentTime + 0.08);
   osc.start();
   osc.stop(metroCtx.currentTime + 0.08);
@@ -50,24 +76,21 @@ function clickAudio(estePrim) {
 
 // ── O bătaie ─────────────────────────────────────────────────
 function bat() {
-  // Puncte vizuale
   document.querySelectorAll('.metronom-beat-dot').forEach(d => d.classList.remove('activ'));
   const dot = document.getElementById('beat-' + metroBeat);
   if (dot) dot.classList.add('activ');
 
-  // Sunet
   clickAudio(metroBeat === 0);
 
-  // Pendul SVG
   const pendul = document.getElementById('pendul-svg');
   if (pendul) {
     pendul.setAttribute('x2', metroBeat % 2 === 0 ? '16' : '8');
   }
 
-  metroBeat = (metroBeat + 1) % 4;
+  metroBeat = (metroBeat + 1) % metroMasura;
 }
 
-// ── Pornire / oprire ─────────────────────────────────────────
+// ── Pornire ───────────────────────────────────────────────────
 function pornesteMetronom() {
   const intervalMs = (60 / metroBpm) * 1000;
   metroBeat = 0;
@@ -75,16 +98,17 @@ function pornesteMetronom() {
   metroInterval = setInterval(bat, intervalMs);
 }
 
+// ── Start / Stop ─────────────────────────────────────────────
 export function toggleMetronom() {
   const btn = document.getElementById('metro-start-btn');
   if (!metroPornit) {
     metroPornit = true;
-    btn.textContent = '⏹ Stop';
+    btn.innerHTML = '⏹ Stop';
     btn.classList.add('pornit');
     pornesteMetronom();
   } else {
     metroPornit = false;
-    btn.textContent = '▶ Start';
+    btn.innerHTML = '▶ Start';
     btn.classList.remove('pornit');
     clearInterval(metroInterval);
     metroInterval = null;
@@ -93,4 +117,9 @@ export function toggleMetronom() {
     const pendul = document.getElementById('pendul-svg');
     if (pendul) pendul.setAttribute('x2', '16');
   }
+}
+
+// ── Init ─────────────────────────────────────────────────────
+export function initMetronom() {
+  construiestePuncte();
 }
