@@ -232,35 +232,84 @@ function getMidiNaturalInferior(midi) {
 }
 
 function getPozMand(midi) {
-  if (!isAlterat(midi)) return PORTATIV_MAP_MAND[midi] || null;
-  // Nota cromatică → Y la mijlocul dintre naturala inferioară și cea superioară
+  // Dacă nota este naturală, o luăm direct din hartă
+  if (!isAlterat(midi)) {
+    return PORTATIV_MAP_MAND[midi] || null;
+  }
+
+  // Nota naturală inferioară (Do pentru Do#, Re pentru Re# etc.)
   const natInf = getMidiNaturalInferior(midi);
-  const natSup = natInf + 1; // semitonul următor e natural (Mi→Fa, Si→Do) sau natInf+2
-  // Găsim naturala superioară reală
-  const naturale = [0, 2, 4, 5, 7, 9, 11];
+
+  // Căutăm nota naturală superioară
   let sup = midi + 1;
-  while (sup <= 76 && !naturale.includes(sup % 12)) sup++;
+  while (sup <= 76 && isAlterat(sup)) {
+    sup++;
+  }
 
   const pInf = PORTATIV_MAP_MAND[natInf];
   const pSup = PORTATIV_MAP_MAND[sup];
-  if (!pInf) return null;
-  const ySup = pSup ? pSup.y : pInf.y - 10;
-  return { y: Math.round((pInf.y + ySup) / 2), ledgers: pInf.ledgers };
+
+  if (!pInf || !pSup) return null;
+
+  // ==========================
+  // MOD DIEZ
+  // Do# -> poziția lui Do
+  // Re# -> poziția lui Re
+  // ==========================
+  if (modAlterat === 'diez') {
+    return {
+      y: pInf.y,
+      ledgers: pInf.ledgers
+    };
+  }
+
+  // ==========================
+  // MOD BEMOL
+  // Reb -> poziția lui Re
+  // Mib -> poziția lui Mi
+  // ==========================
+  if (modAlterat === 'bemol') {
+    return {
+      y: pSup.y,
+      ledgers: pSup.ledgers
+    };
+  }
+
+  // Fallback (dacă vei avea și alt mod)
+  return {
+    y: Math.round((pInf.y + pSup.y) / 2),
+    ledgers: pInf.ledgers
+  };
 }
 
 function getNoteAfisabile() {
   const note = [];
+
   const naturale = [0, 2, 4, 5, 7, 9, 11];
   const alterate = [1, 3, 6, 8, 10];
+
   for (let midi = 55; midi <= 76; midi++) {
     const semi = midi % 12;
+
     if (modAlterat === 'simplu') {
-      if (naturale.includes(semi)) note.push(midi);
-    } else {
-      // diez sau bemol: afișăm DOAR notele alterate (cromatice)
-      if (alterate.includes(semi)) note.push(midi);
+      if (naturale.includes(semi)) {
+        note.push(midi);
+      }
+    }
+
+    else if (modAlterat === 'diez') {
+      if (alterate.includes(semi)) {
+        note.push(midi);
+      }
+    }
+
+    else if (modAlterat === 'bemol') {
+      if (alterate.includes(semi)) {
+        note.push(midi);
+      }
     }
   }
+
   return note;
 }
 
@@ -345,10 +394,10 @@ export function randeazaPortativMandolina() {
     // Semn alterație
     if (alterat && modAlterat !== 'simplu') {
       const semn = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      semn.setAttribute('x', x - 14);
-      semn.setAttribute('y', y + 5);
+      semn.setAttribute('x', x - 20);
+      semn.setAttribute('y', y + 4);
       semn.setAttribute('text-anchor', 'middle');
-      semn.setAttribute('font-size', '14');
+      semn.setAttribute('font-size', '18');
       semn.setAttribute('font-weight', '700');
       semn.setAttribute('fill', eSelectata ? '#1A1410' : 'rgba(26,20,16,0.6)');
       semn.setAttribute('font-family', 'serif');
